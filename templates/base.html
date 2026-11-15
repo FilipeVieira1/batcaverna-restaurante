@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block titulo %}Batcaverna Restaurante{% endblock %}</title>
+  <meta name="description" content="Batcaverna Restaurante em Itapevi-SP: cardápio com preços, localização e contato.">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+</head>
+<body>
+  <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+  <header class="topo">
+    <a class="marca" href="{{ url_for('index') }}">Batcaverna</a>
+    <button class="menu-btn" aria-expanded="false" aria-controls="menu" aria-label="Abrir menu de navegação">Menu</button>
+    <nav id="menu" class="menu" aria-label="Principal">
+      {% set itens = [('index','Início'),('cardapio','Cardápio'),('contato','Localização e contato')] %}
+      {% for ep, rotulo in itens %}
+      <a href="{{ url_for(ep) }}" {% if request.endpoint == ep %}aria-current="page"{% endif %}>{{ rotulo }}</a>
+      {% endfor %}
+    </nav>
+  </header>
+  <main id="conteudo">{% block conteudo %}{% endblock %}</main>
+  <footer class="rodape">
+    <p><strong>Batcaverna Restaurante</strong> · Itapevi-SP</p>
+  </footer>
+</body>
+</html>

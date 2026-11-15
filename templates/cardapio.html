@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block titulo %}Cardápio · Batcaverna{% endblock %}
+{% block conteudo %}
+<section class="bloco">
+  <h1>Cardápio</h1>
+  <p class="intro">Confira os produtos disponíveis e seus preços. Para pedir, use a plataforma de pedidos online.</p>
+
+  {% for categoria, itens in categorias.items() %}
+  <section class="secao" aria-labelledby="cat-{{ loop.index }}">
+    <h2 id="cat-{{ loop.index }}">{{ categoria }} <span class="contagem">({{ itens|length }})</span></h2>
+    <ul class="grade">
+      {% for item in itens %}
+      <li class="card">
+        <div>
+          <h3>{{ item.nome }}</h3>
+          <p class="cat">Categoria: {{ categoria }}</p>
+          {% if item.descricao %}<p>{{ item.descricao }}</p>{% endif %}
+        </div>
+        <p class="preco">{{ item.preco|brl }}</p>
+      </li>
+      {% endfor %}
+    </ul>
+  </section>
+  {% else %}
+  <p class="vazio">Não há produtos disponíveis no momento. Consulte o restaurante pelo WhatsApp.</p>
+  {% endfor %}
+
+  <div class="cta-caixa">
+    <h2>Pronto para pedir?</h2>
+    <div class="acoes"><a class="btn" href="{{ pedidos_url }}" target="_blank" rel="noopener noreferrer">Fazer pedido online</a></div>
+  </div>
+  {% set pagina = 'cardapio' %}{% include "_continuar.html" %}
+</section>
+{% endblock %}

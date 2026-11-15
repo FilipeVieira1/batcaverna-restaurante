@@ -1,0 +1,10 @@
+{# Bloco reutilizável de continuidade: aparece no fim das três páginas. #}
+<nav class="continuar" aria-label="Continue navegando">
+  <h2>Continue por aqui</h2>
+  <div class="acoes">
+    {% if pagina != 'index' %}<a class="btn btn-sec" href="{{ url_for('index') }}">Voltar ao início</a>{% endif %}
+    {% if pagina != 'cardapio' %}<a class="btn" href="{{ url_for('cardapio') }}">Ver cardápio</a>{% endif %}
+    {% if pagina != 'contato' %}<a class="btn btn-sec" href="{{ url_for('contato') }}">Localização e contato</a>{% endif %}
+    <a class="btn btn-sec" href="{{ pedidos_url }}" target="_blank" rel="noopener noreferrer">Fazer pedido online</a>
+  </div>
+</nav>

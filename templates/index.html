@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block conteudo %}
+<section class="hero">
+  <div class="sinal" aria-hidden="true"></div>
+  <h1>Batcaverna Restaurante</h1>
+  <p class="lead">Restaurante em Itapevi-SP. Consulte o cardápio com preços, veja como chegar e faça seu pedido online.</p>
+  <div class="acoes">
+    <a class="btn" href="{{ url_for('cardapio') }}">Ver cardápio</a>
+    <a class="btn btn-sec" href="{{ pedidos_url }}" target="_blank" rel="noopener noreferrer">Fazer pedido online</a>
+  </div>
+</section>
+
+<section class="bloco secao">
+  <h2>Sobre o restaurante</h2>
+  <p class="intro">O Batcaverna Restaurante fica no Jardim Briquet, em Itapevi-SP. Este site reúne em um só lugar as informações para você escolher, chegar e pedir.</p>
+  <ul class="grade">
+    <li class="card"><div><h3>Cardápio com preços</h3><p>Veja os produtos disponíveis, organizados por categoria.</p></div><a href="{{ url_for('cardapio') }}">Abrir cardápio</a></li>
+    <li class="card"><div><h3>Como chegar</h3><p>Endereço completo e atalho para a rota no Google Maps.</p></div><a href="{{ url_for('contato') }}">Ver localização</a></li>
+    <li class="card"><div><h3>Pedidos online</h3><p>Peça pela plataforma de pedidos do restaurante.</p></div><a href="{{ pedidos_url }}" target="_blank" rel="noopener noreferrer">Ir para os pedidos</a></li>
+  </ul>
+</section>
+
+{% if categorias %}
+<section class="bloco secao">
+  <h2>Destaques do cardápio</h2>
+  <p class="intro">Categorias com produtos disponíveis agora.</p>
+  <ul class="grade">
+    {% for categoria, itens in categorias.items() %}
+    <li class="card">
+      <div><h3>{{ categoria }}</h3>
+      <p>{{ itens|length }} {{ 'produto disponível' if itens|length == 1 else 'produtos disponíveis' }}</p></div>
+      <p class="preco">A partir de {{ (itens|map(attribute='preco')|min)|brl }}</p>
+    </li>
+    {% endfor %}
+  </ul>
+  <p><a class="btn" href="{{ url_for('cardapio') }}">Ver cardápio completo</a></p>
+</section>
+{% endif %}
+
+<section class="bloco secao">
+  <h2>Localização e contato</h2>
+  <div class="cta-caixa">
+    <p><strong>Endereço:</strong> {{ endereco }}</p>
+    <p><strong>WhatsApp:</strong> {{ whatsapp }}</p>
+    <div class="acoes"><a class="btn btn-sec" href="{{ url_for('contato') }}">Como chegar e falar com a gente</a></div>
+  </div>
+</section>
+
+<section class="bloco secao">
+  <div class="cta-caixa">
+    <h2>Venha conhecer o restaurante</h2>
+    <p>Prefere pedir sem sair de casa? Use a plataforma de pedidos.</p>
+    <div class="acoes"><a class="btn" href="{{ pedidos_url }}" target="_blank" rel="noopener noreferrer">Fazer pedido online</a></div>
+  </div>
+</section>
+  {% set pagina = 'index' %}{% include "_continuar.html" %}
+{% endblock %}
