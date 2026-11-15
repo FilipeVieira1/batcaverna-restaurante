@@ -12,6 +12,7 @@
   <a class="pular" href="#conteudo">Pular para o conteúdo</a>
   <header class="topo">
     <a class="marca" href="{{ url_for('index') }}">Batcaverna</a>
+    <a class="carrinho-link" href="{{ url_for('cardapio') }}#carrinho" aria-label="Ver carrinho">Carrinho <span id="carrinho-qtd">0</span></a>
     <button class="menu-btn" aria-expanded="false" aria-controls="menu" aria-label="Abrir menu de navegação">Menu</button>
     <nav id="menu" class="menu" aria-label="Principal">
       {% set itens = [('index','Início'),('cardapio','Cardápio'),('contato','Localização e contato')] %}
@@ -23,6 +24,7 @@
   <main id="conteudo">{% block conteudo %}{% endblock %}</main>
   <footer class="rodape">
     <p><strong>Batcaverna Restaurante</strong> · Itapevi-SP</p>
+    {% if modo_demo %}<p>Site em desenvolvimento acadêmico: cardápio e preços são exemplos fictícios.</p>{% endif %}
   </footer>
 </body>
 </html>

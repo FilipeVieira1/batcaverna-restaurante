@@ -3,10 +3,10 @@ import os
 from pathlib import Path
 from urllib.parse import quote
 
-from flask import Flask, render_template
+from flask import Flask, jsonify, render_template
 from werkzeug.exceptions import HTTPException
 
-from database.db import init_db, itens_disponiveis
+from database.db import catalogo_disponivel, init_db, itens_disponiveis
 
 ENDERECO = "Rua Nelson Ezequiel de Farias, 231, Jardim Briquet, Itapevi-SP"
 WHATSAPP_EXIBIDO = "(11) 98291-7313"
@@ -25,12 +25,14 @@ def create_app(db_path=None):
     app = Flask(__name__)
     app.config["DB_PATH"] = db_path or os.environ.get(
         "BATCAVERNA_DB", str(Path(app.instance_path) / "batcaverna.db"))
+    # Aviso de dados fictícios; defina BATCAVERNA_DEMO=0 ao usar dados reais.
+    app.config["MODO_DEMO"] = os.environ.get("BATCAVERNA_DEMO", "1") == "1"
     app.jinja_env.filters["brl"] = formatar_preco
     init_db(app.config["DB_PATH"])
 
     @app.context_processor
     def globais():
-        return dict(pedidos_url=PEDIDOS_URL)
+        return dict(modo_demo=app.config["MODO_DEMO"], pedidos_url=PEDIDOS_URL)
 
     @app.get("/")
     def index():
@@ -39,8 +41,15 @@ def create_app(db_path=None):
 
     @app.get("/cardapio")
     def cardapio():
-        return render_template("cardapio.html",
+        return render_template("cardapio.html", whatsapp_link=WHATSAPP_LINK,
                                categorias=itens_disponiveis(app.config["DB_PATH"]))
+
+    @app.get("/api/itens")
+    def api_itens():
+        """Catálogo (somente leitura) para o carrinho do navegador."""
+        resposta = jsonify(catalogo_disponivel(app.config["DB_PATH"]))
+        resposta.headers["Cache-Control"] = "no-store"
+        return resposta
 
     @app.get("/contato")
     def contato():

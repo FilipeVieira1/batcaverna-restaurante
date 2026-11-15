@@ -100,3 +100,14 @@ main{max-width:68rem; margin:0 auto; padding:2rem 1rem; min-height: calc(100vh -
 .continuar{margin-top:3rem; padding-top:1rem; border-top:1px solid var(--borda)}
 .continuar h2{border:0; font-size:1.25rem}
 .continuar .acoes{justify-content:flex-start}
+
+/* ===== Carrinho ===== */
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.carrinho-link{display:inline-flex;align-items:center;gap:.4rem;min-height:44px;padding:0 1rem;color:var(--sinal);font-weight:700;text-decoration:none;border:2px solid var(--sinal);border-radius:8px}
+.carrinho-link span{background:var(--sinal);color:#0d0f12;border-radius:999px;min-width:1.5rem;text-align:center;padding:0 .4rem}
+.add-carrinho{width:100%}
+.carrinho-lista{list-style:none;padding:0;margin:1rem 0}
+.carrinho-lista li{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.5rem;padding:.75rem 0;border-bottom:1px solid var(--borda)}
+.qtd{display:inline-flex;align-items:center;gap:.5rem}
+.qtd button{min-width:44px;min-height:44px;background:transparent;color:var(--sinal);border:2px solid var(--sinal);border-radius:8px;font:inherit;font-weight:800;cursor:pointer}
+.nota{font-size:.9rem;color:var(--suave)}
