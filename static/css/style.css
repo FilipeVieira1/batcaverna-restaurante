@@ -54,13 +54,15 @@ main{max-width:68rem; margin:0 auto; padding:2rem 1rem; min-height: calc(100vh -
 
 /* Blocos e Cards */
 .bloco{max-width:60rem; margin:0 auto}
-.grade{list-style:none; padding:0; display:grid; gap:1.25rem; grid-template-columns:repeat(auto-fill,minmax(18rem,1fr))}
-.card{background:var(--painel); border:1px solid var(--card-borda); border-top:4px solid var(--sinal); border-radius:10px; padding:1.5rem; display: flex; flex-direction: column; justify-content: space-between; transition: transform .2s ease, border-color .2s ease;}
+.grade{list-style:none; padding:0; display:grid; gap:1.25rem; grid-template-columns:repeat(auto-fit,minmax(min(100%,17rem),1fr))}
+.card{width:100%; max-width:24rem; min-width:0; height:100%; justify-self:center; background:var(--painel); border:1px solid var(--card-borda); border-top:4px solid var(--sinal); border-radius:10px; padding:1.25rem; display:flex; flex-direction:column; transition:transform .2s ease, border-color .2s ease;}
 .card:hover{transform: translateY(-3px); border-color: var(--sinal);}
-.card h3{margin:0 0 .35rem; font-size:1.2rem; color: var(--texto);}
+.card h3{margin:0 0 .35rem; font-size:1.2rem; color: var(--texto); overflow-wrap:anywhere;}
 .cat{color:var(--suave); font-size:.85rem; margin:0 0 .75rem; text-transform: uppercase; letter-spacing: .05em; font-weight: 700;}
-.card p:not(.cat):not(.preco){color: var(--suave); font-size: .95rem; margin: 0 0 1rem; flex-grow: 1;}
-.preco{font-weight:900; font-size:1.35rem; color:var(--sinal); margin:0}
+.card-conteudo{min-width:0; flex:1}
+.card p:not(.cat):not(.preco){color:var(--suave); font-size:.95rem; margin:0 0 1rem; overflow-wrap:anywhere}
+.card-rodape{display:grid; gap:.75rem; padding-top:1rem; margin-top:1rem; border-top:1px solid var(--borda)}
+.preco{width:fit-content; padding:.2rem .65rem; border-radius:6px; background:rgba(255,204,0,.1); color:var(--sinal); font-weight:900; font-size:1.5rem; line-height:1.3; font-variant-numeric:tabular-nums; white-space:nowrap; margin:0}
 
 .aviso,.vazio{background:var(--painel); border:2px dashed var(--sinal); padding:1.25rem; border-radius:10px; text-align: center; color: var(--suave); margin-bottom: 2rem;}
 .vazio{border-style: solid; border-color: var(--card-borda);}
@@ -81,6 +83,15 @@ main{max-width:68rem; margin:0 auto; padding:2rem 1rem; min-height: calc(100vh -
   .menu.aberto{display:flex}
   .menu a{padding: .75rem 1rem; width: 100%; border-radius: 0;}
   .hero{padding: 2rem 1rem;}
+}
+
+@media (max-width:30rem){
+  main{padding:1.25rem .75rem}
+  .bloco{width:100%}
+  .grade{gap:.875rem}
+  .card{padding:1rem}
+  .card-rodape{gap:.625rem}
+  .add-carrinho{padding:.75rem .625rem}
 }
 
 @media (prefers-reduced-motion:reduce){
@@ -105,7 +116,8 @@ main{max-width:68rem; margin:0 auto; padding:2rem 1rem; min-height: calc(100vh -
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .carrinho-link{display:inline-flex;align-items:center;gap:.4rem;min-height:44px;padding:0 1rem;color:var(--sinal);font-weight:700;text-decoration:none;border:2px solid var(--sinal);border-radius:8px}
 .carrinho-link span{background:var(--sinal);color:#0d0f12;border-radius:999px;min-width:1.5rem;text-align:center;padding:0 .4rem}
-.add-carrinho{width:100%}
+.add-carrinho{width:100%; min-height:52px; padding:.65rem 1rem; line-height:1.25; white-space:normal}
+.add-carrinho.adicionado{background:var(--painel-hover); border-color:var(--sinal); color:var(--texto); transform:none; filter:none; box-shadow:0 0 0 3px rgba(255,204,0,.2)}
 .carrinho-lista{list-style:none;padding:0;margin:1rem 0}
 .carrinho-lista li{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.5rem;padding:.75rem 0;border-bottom:1px solid var(--borda)}
 .qtd{display:inline-flex;align-items:center;gap:.5rem}

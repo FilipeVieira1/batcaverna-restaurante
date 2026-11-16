@@ -73,10 +73,23 @@ document.addEventListener("DOMContentLoaded", () => {
       gravar(c); render();
     };
 
-    document.querySelectorAll(".add-carrinho").forEach((b) => b.addEventListener("click", () => {
-      alterar(b.dataset.id, 1);
-      const av = $("carrinho-aviso"); if (av) av.textContent = `${b.getAttribute("aria-label").replace("Adicionar ", "").replace(" ao carrinho", "")} adicionado ao carrinho.`;
-    }));
+    const feedbackTimers = new WeakMap();
+    document.querySelectorAll(".add-carrinho").forEach((b) => {
+      const rotuloOriginal = b.textContent;
+      b.addEventListener("click", () => {
+        alterar(b.dataset.id, 1);
+        const av = $("carrinho-aviso"); if (av) av.textContent = `${b.getAttribute("aria-label").replace("Adicionar ", "").replace(" ao carrinho", "")} adicionado ao carrinho.`;
+        const timerAnterior = feedbackTimers.get(b);
+        if (timerAnterior !== undefined) window.clearTimeout(timerAnterior);
+        b.classList.add("adicionado");
+        b.textContent = "Adicionado ✓";
+        feedbackTimers.set(b, window.setTimeout(() => {
+          b.classList.remove("adicionado");
+          b.textContent = rotuloOriginal;
+          feedbackTimers.delete(b);
+        }, 1400));
+      });
+    });
     if (sec) $("carrinho-limpar").addEventListener("click", () => { gravar({}); render(); });
 
     if (sec) fetch(sec.dataset.api).then((r) => r.json()).then((d) => { catalogo = d; render(); }).catch(() => { $("carrinho-vazio").textContent = "Não foi possível carregar o carrinho agora."; });

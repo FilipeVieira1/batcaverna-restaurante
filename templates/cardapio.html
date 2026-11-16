@@ -11,13 +11,15 @@
     <ul class="grade">
       {% for item in itens %}
       <li class="card">
-        <div>
+        <div class="card-conteudo">
           <h3>{{ item.nome }}</h3>
           <p class="cat">Categoria: {{ categoria }}</p>
           {% if item.descricao %}<p>{{ item.descricao }}</p>{% endif %}
         </div>
-        <p class="preco">{{ item.preco|brl }}</p>
-        <button type="button" class="btn add-carrinho" data-id="{{ item.item_id }}" aria-label="Adicionar {{ item.nome }} ao carrinho">Adicionar ao carrinho</button>
+        <div class="card-rodape">
+          <p class="preco"><span class="sr-only">Preço: </span>{{ item.preco|brl }}</p>
+          <button type="button" class="btn add-carrinho" data-id="{{ item.item_id }}" aria-label="Adicionar {{ item.nome }} ao carrinho">Adicionar ao carrinho</button>
+        </div>
       </li>
       {% endfor %}
     </ul>
