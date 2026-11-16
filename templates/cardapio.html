@@ -4,7 +4,6 @@
 <section class="bloco">
   <h1>Cardápio</h1>
   <p class="intro">Confira os produtos disponíveis e seus preços. Para pedir, use a plataforma de pedidos online.</p>
-  {% if modo_demo %}<p class="aviso">⚠️ Itens e preços de exemplo, a serem substituídos pelos dados reais.</p>{% endif %}
 
   {% for categoria, itens in categorias.items() %}
   <section class="secao" aria-labelledby="cat-{{ loop.index }}">
