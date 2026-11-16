@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 from urllib.parse import quote
 
-from flask import Flask, jsonify, render_template
+from flask import Flask, jsonify, render_template, request
 from werkzeug.exceptions import HTTPException
 
 from database.db import catalogo_disponivel, init_db, itens_disponiveis
@@ -33,6 +33,21 @@ def create_app(db_path=None):
     @app.context_processor
     def globais():
         return dict(modo_demo=app.config["MODO_DEMO"], pedidos_url=PEDIDOS_URL)
+
+    # Cabeçalhos de segurança aplicados a todas as respostas.
+    CSP = ("default-src 'self'; script-src 'self'; style-src 'self'; "
+           "img-src 'self' data:; object-src 'none'; frame-ancestors 'none'; "
+           "base-uri 'self'; form-action 'self'")
+
+    @app.after_request
+    def cabecalhos_de_seguranca(resposta):
+        resposta.headers["Content-Security-Policy"] = CSP
+        resposta.headers["X-Content-Type-Options"] = "nosniff"
+        resposta.headers["X-Frame-Options"] = "DENY"
+        resposta.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+        resposta.headers["Permissions-Policy"] = (
+            "camera=(), microphone=(), geolocation=()")
+        return resposta
 
     @app.get("/")
     def index():
@@ -68,6 +83,9 @@ def create_app(db_path=None):
 
     @app.errorhandler(Exception)
     def erro_interno(erro):
+        if not isinstance(erro, HTTPException):
+            # Registra o erro real no log do servidor; o visitante vê só a mensagem amigável.
+            app.logger.exception("Erro inesperado ao processar %s", request.path)
         if isinstance(erro, HTTPException):  # ex.: 405 mantém o código correto
             return render_template("erro.html", titulo="Requisição não permitida",
                                    msg="Esta ação não está disponível."), erro.code
