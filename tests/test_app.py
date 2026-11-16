@@ -87,6 +87,13 @@ class TestBatcaverna(unittest.TestCase):
             self.assertIn(trecho, carrinho)
         self.assertIn('id="carrinho-qtd"', self.pagina("/"))
 
+    def test_imagem_de_fundo_servida(self):
+        r = self.client.get("/static/images/fundo.jpg")
+        self.assertEqual(r.status_code, 200)
+        self.assertEqual(r.mimetype, "image/jpeg")
+        r.close()
+        self.assertIn("fundo.jpg", self.client.get("/static/css/style.css").get_data(as_text=True))
+
     def test_formato_preco(self):
         self.assertEqual(formatar_preco(1234.5), "R$ 1.234,50")
 

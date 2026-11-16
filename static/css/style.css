@@ -111,3 +111,7 @@ main{max-width:68rem; margin:0 auto; padding:2rem 1rem; min-height: calc(100vh -
 .qtd{display:inline-flex;align-items:center;gap:.5rem}
 .qtd button{min-width:44px;min-height:44px;background:transparent;color:var(--sinal);border:2px solid var(--sinal);border-radius:8px;font:inherit;font-weight:800;cursor:pointer}
 .nota{font-size:.9rem;color:var(--suave)}
+
+/* ===== Imagem de fundo (camada fixa, com película escura para manter o contraste) ===== */
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:linear-gradient(rgba(13,15,18,.84),rgba(13,15,18,.93)),url("../images/fundo.jpg") center/cover no-repeat}
