@@ -28,6 +28,13 @@ class TestBatcaverna(unittest.TestCase):
         for trecho in ("Prato exemplo 1", "R$ 32,90", "Pratos principais"):
             self.assertIn(trecho, html)
 
+    def test_cardapio_exibe_preco_e_acao_acessiveis_no_card(self):
+        html = self.pagina("/cardapio")
+        self.assertIn('class="card-rodape"', html)
+        self.assertIn('<span class="sr-only">Preço: </span>', html)
+        self.assertIn('class="btn add-carrinho"', html)
+        self.assertIn('aria-label="Adicionar Prato exemplo 1 ao carrinho"', html)
+
     def test_indisponivel_nao_aparece(self):
         self.assertNotIn("indisponível)", self.pagina("/cardapio"))
 
