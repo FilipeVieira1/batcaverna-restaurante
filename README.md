@@ -30,6 +30,8 @@ python -m unittest discover -s tests -v
 
 ## Produção
 Não use `app.run`. Exemplo: `pip install gunicorn && gunicorn app:app` (debug permanece desligado).
+As respostas incluem CSP restritiva, proteção contra enquadramento e cabeçalhos
+que desativam APIs de câmera, microfone e geolocalização não utilizadas pelo site.
 
 ## Pendente de confirmação com o restaurante
 Horários de funcionamento, cardápio e preços reais, logotipo/fotos oficiais e texto institucional definitivo.

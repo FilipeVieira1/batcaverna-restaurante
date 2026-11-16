@@ -100,7 +100,12 @@ class TestBatcaverna(unittest.TestCase):
             self.assertEqual(h["X-Content-Type-Options"], "nosniff")
             self.assertEqual(h["X-Frame-Options"], "DENY")
             self.assertIn("frame-ancestors 'none'", h["Content-Security-Policy"])
+            self.assertIn("object-src 'none'", h["Content-Security-Policy"])
+            self.assertIn("script-src 'self'", h["Content-Security-Policy"])
+            self.assertIn("style-src 'self'", h["Content-Security-Policy"])
             self.assertIn("Referrer-Policy", h)
+            self.assertEqual(
+                h["Permissions-Policy"], "camera=(), microphone=(), geolocation=()")
 
     def test_erro_interno_e_registrado_sem_vazar_detalhes(self):
         app = create_app(self.db)

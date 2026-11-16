@@ -35,7 +35,8 @@ def create_app(db_path=None):
         return dict(modo_demo=app.config["MODO_DEMO"], pedidos_url=PEDIDOS_URL)
 
     # Cabeçalhos de segurança aplicados a todas as respostas.
-    CSP = ("default-src 'self'; img-src 'self' data:; frame-ancestors 'none'; "
+    CSP = ("default-src 'self'; script-src 'self'; style-src 'self'; "
+           "img-src 'self' data:; object-src 'none'; frame-ancestors 'none'; "
            "base-uri 'self'; form-action 'self'")
 
     @app.after_request
@@ -44,6 +45,8 @@ def create_app(db_path=None):
         resposta.headers["X-Content-Type-Options"] = "nosniff"
         resposta.headers["X-Frame-Options"] = "DENY"
         resposta.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+        resposta.headers["Permissions-Policy"] = (
+            "camera=(), microphone=(), geolocation=()")
         return resposta
 
     @app.get("/")
