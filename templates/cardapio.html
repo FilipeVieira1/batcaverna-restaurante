@@ -27,22 +27,11 @@
   <p class="vazio">Não há produtos disponíveis no momento. Consulte o restaurante pelo WhatsApp.</p>
   {% endfor %}
 
-  <section id="carrinho" class="cta-caixa" data-api="{{ url_for('api_itens') }}" data-whatsapp="{{ whatsapp_link }}" aria-labelledby="carrinho-titulo">
-    <h2 id="carrinho-titulo">Seu carrinho</h2>
-    <p id="carrinho-aviso" class="sr-only" role="status" aria-live="polite"></p>
-    <p id="carrinho-vazio">Seu carrinho está vazio. Use “Adicionar ao carrinho” nos produtos acima.</p>
-    <ul id="carrinho-lista" class="carrinho-lista"></ul>
-    <p id="carrinho-total" class="preco" hidden></p>
-    <div class="acoes" id="carrinho-acoes" hidden>
-      <a id="carrinho-enviar" class="btn" href="#" target="_blank" rel="noopener noreferrer">Enviar pedido pelo WhatsApp</a>
-      <button type="button" id="carrinho-limpar" class="btn btn-sec">Limpar carrinho</button>
-    </div>
-    <p class="nota">O pedido é enviado ao restaurante pelo WhatsApp. Confirme disponibilidade, pagamento e entrega diretamente com o estabelecimento.</p>
-  </section>
+  <p id="carrinho-aviso" class="sr-only" role="status" aria-live="polite"></p>
 
   <div class="cta-caixa">
     <h2>Pronto para pedir?</h2>
-    <div class="acoes"><a class="btn" href="{{ pedidos_url }}" target="_blank" rel="noopener noreferrer">Fazer pedido online</a></div>
+    <div class="acoes"><a class="btn" href="{{ url_for('carrinho') }}">Ver carrinho</a> <a class="btn btn-sec" href="{{ pedidos_url }}" target="_blank" rel="noopener noreferrer">Fazer pedido online</a></div>
   </div>
   {% set pagina = 'cardapio' %}{% include "_continuar.html" %}
 </section>

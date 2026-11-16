@@ -40,11 +40,11 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("DOMContentLoaded", () => {
     selo();
     const sec = document.getElementById("carrinho");
-    if (!sec) return;
     const $ = (id) => document.getElementById(id);
     let catalogo = {};
 
     const render = () => {
+      if (!sec) { selo(); return; }
       const carrinho = ler(), lista = $("carrinho-lista");
       lista.replaceChildren();
       let soma = 0; const linhas = [];
@@ -75,10 +75,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.querySelectorAll(".add-carrinho").forEach((b) => b.addEventListener("click", () => {
       alterar(b.dataset.id, 1);
-      $("carrinho-aviso").textContent = `${b.getAttribute("aria-label").replace("Adicionar ", "").replace(" ao carrinho", "")} adicionado ao carrinho.`;
+      const av = $("carrinho-aviso"); if (av) av.textContent = `${b.getAttribute("aria-label").replace("Adicionar ", "").replace(" ao carrinho", "")} adicionado ao carrinho.`;
     }));
-    $("carrinho-limpar").addEventListener("click", () => { gravar({}); render(); });
+    if (sec) $("carrinho-limpar").addEventListener("click", () => { gravar({}); render(); });
 
-    fetch(sec.dataset.api).then((r) => r.json()).then((d) => { catalogo = d; render(); }).catch(() => { $("carrinho-vazio").textContent = "Não foi possível carregar o carrinho agora."; });
+    if (sec) fetch(sec.dataset.api).then((r) => r.json()).then((d) => { catalogo = d; render(); }).catch(() => { $("carrinho-vazio").textContent = "Não foi possível carregar o carrinho agora."; });
   });
 })();

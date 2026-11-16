@@ -10,7 +10,7 @@ source .venv/bin/activate        # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 python app.py                    # abra http://127.0.0.1:5000
 ```
-O banco `instance/batcaverna.db` é criado automaticamente na primeira execução, com itens iniciais.
+O banco `instance/batcaverna.db` é criado automaticamente na primeira execução, com dados **fictícios**.
 
 ## Testes
 ```bash
@@ -22,10 +22,11 @@ python -m unittest discover -s tests -v
 - **Aplicação:** `app.py` (rotas GET, filtro de preço R$, erros amigáveis)
 - **Dados:** `database/` (`schema.sql`, `seed.sql`, `db.py` com consultas parametrizadas). O arquivo `.db` fica em `instance/`, fora de `static/`, portanto não é servido.
 
-## Atualizar os itens do cardápio
+## Trocar os dados fictícios pelos reais
 1. Edite `database/seed.sql` com categorias, itens e preços reais (preço > 0; `disponivel` 1 ou 0).
 2. Apague `instance/batcaverna.db` e rode `python app.py` de novo (o banco é recriado).
-3. Em `templates/contato.html`, preencha os horários no campo marcado `PREENCHER`.
+3. Defina `BATCAVERNA_DEMO=0` para remover os avisos de "dados fictícios".
+4. Em `templates/contato.html`, preencha os horários no campo marcado `PREENCHER`.
 
 ## Produção
 Não use `app.run`. Exemplo: `pip install gunicorn && gunicorn app:app` (debug permanece desligado).
@@ -37,3 +38,6 @@ Horários de funcionamento, cardápio e preços reais, logotipo/fotos oficiais e
 - `templates/_continuar.html`: bloco de links de continuidade, reutilizado nas três páginas.
 - A página inicial lê as categorias disponíveis do SQLite ("Destaques do cardápio"); nenhuma alteração no banco foi necessária.
 - Todo texto institucional usa apenas informações confirmadas (nome, endereço, WhatsApp, plataforma de pedidos). Horários continuam pendentes.
+
+## Carrinho simples
+O carrinho tem página própria (`/carrinho`). Itens ficam no navegador (`localStorage`, só id e quantidade). Nomes e preços vêm de `GET /api/itens` (somente leitura, só itens disponíveis). O pedido é enviado por link do WhatsApp; não há pagamento nem pedido salvo no servidor.

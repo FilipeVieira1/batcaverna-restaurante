@@ -77,10 +77,14 @@ class TestBatcaverna(unittest.TestCase):
         self.assertNotIn("3", dados)            # item 3 é indisponível
         self.assertEqual(self.client.post("/api/itens").status_code, 405)
 
-    def test_cardapio_tem_carrinho(self):
-        html = self.pagina("/cardapio")
-        for trecho in ('id="carrinho"', 'class="btn add-carrinho"', "Enviar pedido pelo WhatsApp"):
-            self.assertIn(trecho, html)
+    def test_carrinho_em_pagina_propria(self):
+        cardapio = self.pagina("/cardapio")
+        self.assertIn('class="btn add-carrinho"', cardapio)
+        self.assertIn('href="/carrinho"', cardapio)
+        self.assertNotIn('id="carrinho"', cardapio)
+        carrinho = self.pagina("/carrinho")
+        for trecho in ('id="carrinho"', "Enviar pedido pelo WhatsApp", "https://wa.me/5511982917313"):
+            self.assertIn(trecho, carrinho)
         self.assertIn('id="carrinho-qtd"', self.pagina("/"))
 
     def test_formato_preco(self):

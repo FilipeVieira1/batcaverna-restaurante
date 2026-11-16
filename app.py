@@ -41,8 +41,12 @@ def create_app(db_path=None):
 
     @app.get("/cardapio")
     def cardapio():
-        return render_template("cardapio.html", whatsapp_link=WHATSAPP_LINK,
+        return render_template("cardapio.html",
                                categorias=itens_disponiveis(app.config["DB_PATH"]))
+
+    @app.get("/carrinho")
+    def carrinho():
+        return render_template("carrinho.html", whatsapp_link=WHATSAPP_LINK)
 
     @app.get("/api/itens")
     def api_itens():
