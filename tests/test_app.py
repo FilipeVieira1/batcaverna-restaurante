@@ -94,6 +94,29 @@ class TestBatcaverna(unittest.TestCase):
         r.close()
         self.assertIn("fundo.jpg", self.client.get("/static/css/style.css").get_data(as_text=True))
 
+    def test_cabecalhos_de_seguranca(self):
+        for rota in ("/", "/cardapio", "/carrinho", "/contato", "/api/itens", "/nao-existe"):
+            h = self.client.get(rota).headers
+            self.assertEqual(h["X-Content-Type-Options"], "nosniff")
+            self.assertEqual(h["X-Frame-Options"], "DENY")
+            self.assertIn("frame-ancestors 'none'", h["Content-Security-Policy"])
+            self.assertIn("Referrer-Policy", h)
+
+    def test_erro_interno_e_registrado_sem_vazar_detalhes(self):
+        app = create_app(self.db)
+
+        @app.get("/boom")
+        def boom():
+            raise RuntimeError("segredo-interno")
+
+        with self.assertLogs(app.logger, "ERROR") as log:
+            r = app.test_client().get("/boom")
+        corpo = r.get_data(as_text=True)
+        self.assertEqual(r.status_code, 500)
+        self.assertIn("segredo-interno", "\n".join(log.output))   # está no log
+        self.assertNotIn("segredo-interno", corpo)                 # não aparece ao visitante
+        self.assertNotIn("Traceback", corpo)
+
     def test_formato_preco(self):
         self.assertEqual(formatar_preco(1234.5), "R$ 1.234,50")
 
